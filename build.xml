@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Beholder" default="all" basedir=".">
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="jar.dir" value="C:\Users\Charles\batclient\plugins\" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="src.dir" value="${basedir}/src" />
+	
+	<target name="init">
+		<tstamp />
+	</target>
+	
+	<path id="build.classpath"> 
+		<pathelement location="${build.dir}/bin" />
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="compile" depends="init" description="Compiles Java"> 
+			
+		<delete dir="${build.dir}/bin" />
+		
+		<mkdir dir="${build.dir}/bin" />
+				
+		<javac 
+			includeantruntime="false"
+			destdir="${build.dir}/bin" 
+			classpathref="build.classpath" 
+			debug="on" 
+			optimize="false"
+			deprecation="on"
+			target="1.5"
+			source="1.5">
+			
+			<src path="${src.dir}" />
+    	</javac>
+	</target>
+	
+	<target name="package" description="Builds jar-files" depends="compile">
+			
+		<delete file="${jar.dir}/beholder.jar" />
+		<jar jarfile="${jar.dir}/beholder.jar">			
+			
+			<manifest>
+				<attribute name="Built-By" value="Your name"/>		      		
+		        <attribute name="Sealed" value="false"/>
+			</manifest>
+			
+			<fileset dir="${build.dir}/bin">
+				<include name="beholder/**/*.class" />
+			</fileset>
+			
+		</jar>
+	</target>
+	
+	<target name="all" depends="package" />
+	
+</project>
